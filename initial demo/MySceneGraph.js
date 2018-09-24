@@ -635,10 +635,99 @@ class MySceneGraph {
      */
     parseTextures(texturesNode) {
         // TODO: Parse block
+        var children = texturesNode.children;
+
+        this.textures = [];
+        var numTextures = 0;
+
+        var grandChildren = [];
+        var nodeNames = [];
+
+        // Any number of textures.
+        for (var i = 0; i < children.length; i++) {
+
+            if (children[i].nodeName != "TEXTURE") {
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
+                continue;
+            }
+
+            // Get id of the current texture.
+            var textureId = this.reader.getString(children[i], 'id');
+            if (textureId == null)
+                return "no ID defined for texture";
+
+            // Checks for repeated IDs.
+            if (this.textures[textureId] != null)
+                return "ID must be unique for each texture (conflict: ID = " + textureId + ")";
+
+            grandChildren = children[i].children;
+            // Specifications for the current texture.
+
+            nodeNames = [];
+            for (var j = 0; j < grandChildren.length; j++) {
+                nodeNames.push(grandChildren[j].nodeName);
+            }
+
+            /*
+            // Checks if at most one file and one amplif_factor are defined.
+            if (illuminationNode.getElementsByTagName('file').length > 1)
+                return "no more than one texture file may be defined";
+
+            if (illuminationNode.getElementsByTagName('amplif_factor').length > 1)
+                return "no more than one texture amplif_factor may be defined";
+
+            */
+
+            // Gets indices of each element.
+            var fileIndex = nodeNames.indexOf("file");
+            var amplif_factorIndex = nodeNames.indexOf("amplif_factor");
+
+            //File
+            if (fileIndex == -1)
+                this.onXMLMinorError("texture file undefined;");
+            else {
+                var path = this.reader.getString(grandChildren[fileIndex], 'path');
+
+                if (path == null) {
+                    path = "error";
+                    this.onXMLMinorError("failed to parse texture file; assuming error");
+                }
+            }
+
+            //Amplif_factor
+            if (amplif_factorIndex == -1)
+                this.onXMLMinorError("texture amplif_factor undefined;");
+            else {
+                var amplif_factorS = this.reader.getFloat(grandChildren[amplif_factorIndex], 's');
+                var amplif_factorT = this.reader.getFloat(grandChildren[amplif_factorIndex], 't');
+
+                if (amplif_factorS == null || amplif_factorT == null) {
+                    amplif_factorS = 0;
+                    amplif_factorT = 0;
+
+                    this.onXMLMinorError("failed to parse texture amplif_factor; assuming zero");
+                }
+            }
+
+            // TODO: Store Texture global information.
+            //this.textures[textureId] = ...;
+            numTextures++;
+            console.log("Texture " + textureId);
+            console.log("File Path " + path);
+            console.log("Amplif Factor " + amplif_factorS + " " + amplif_factorT);
+        }
+
+        if (numTextures == 0)
+            return "at least one texture must be defined";
+        else if (numTextures > 8)
+
+            this.onXMLMinorError("too many textures defined; WebGL imposes a limit of 8 textures");
+
 
         console.log("Parsed textures");
 
         return null;
+
     }
 
     /**
