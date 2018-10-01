@@ -1,6 +1,7 @@
 var DEGREE_TO_RAD = Math.PI / 180;
 
 // Order of the groups in the XML document.
+var SCENE_INDEX = 0;
 var INITIALS_INDEX = 0;
 var ILLUMINATION_INDEX = 1;
 var LIGHTS_INDEX = 2;
@@ -70,8 +71,8 @@ class MySceneGraph {
      * @param {XML root element} rootElement
      */
     parseXMLFile(rootElement) {
-        if (rootElement.nodeName != "SCENE")
-            return "root tag <SCENE> missing";
+        if (rootElement.nodeName != "yas")
+            return "root tag <yas> missing";
 
         var nodes = rootElement.children;
 
@@ -85,6 +86,19 @@ class MySceneGraph {
         var error;
 
         // Processes each node, verifying errors.
+
+        // <scene>
+        var index;
+        if((index = nodeNames.indexOf("scene")) == -1)
+            return "tag <scene> missing";
+        else{
+            if(index != SCENE_INDEX)
+                this.onXMLError("tag <scene> out of order");
+
+            //Parse the scene block
+            if((error = this.parseScene(nodes[index])) != null)
+                return error;
+        }
 
         // <INITIALS>
         var index;
@@ -158,6 +172,17 @@ class MySceneGraph {
             if ((error = this.parseNodes(nodes[index])) != null)
                 return error;
         }
+    }
+
+    /**
+     * Parses the <scene> block.
+     */
+    parseScene(sceneNode){
+
+        this.root = this.reader.getString(sceneNode, "root");
+        console.log(this.root);
+        this.axis_length = this.reader.getFloat(sceneNode, "axis_length");
+        console.log(this.axis_length);
     }
 
     /**
