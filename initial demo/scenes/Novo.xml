@@ -13,78 +13,78 @@
     <!-- deve definir-se um objeto para raiz da arvore, assim -->
     <!-- como o comprimento dos tres eixos (cilindros) -->
     <scene root="TEST" axis_length="1.0" />
-    <views default="ss">
+    <views default="default_view">
         <!-- tem de existir, pelo menos, uma vista de -->
         <!-- entre as seguintes (perspective ou ortho) -->
-        <perspective id="ss" near="ff" far="ff" angle="ff">
-            <from x="ff" y="ff" z="ff" />
-            <to x="ff" y="ff" z="ff" />
+        <perspective id="perspective1" near="1" far="2" angle="3">
+            <from x="4" y="5" z="6" />
+            <to x="7" y="8" z="9" />
         </perspective>
-        <ortho id="ss" near="ff" far="ff" left="ff" right="ff" top="ff" bottom="ff" />
+        <ortho id="ortho1" near="1" far="2" left="3" right="4" top="5" bottom="6" />
     </views>
     <ambient>
-        <ambient r="ff" g="ff" b="ff" a="ff" />
-        <background r="ff" g="ff" b="ff" a="ff" />
+        <ambient r="1" g="2" b="3" a="4" />
+        <background r="5" g="6" b="7" a="8" />
     </ambient>
     <lights>
         <!-- Deve existir um ou mais blocos "omni" ou "spot" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
-        <omni id="ss" enabled="tt">
-            <location x="ff" y="ff" z="ff" w="ff" />
-            <ambient r="ff" g="ff" b="ff" a="ff" />
-            <diffuse r="ff" g="ff" b="ff" a="ff" />
-            <specular r="ff" g="ff" b="ff" a="ff" />
+        <omni id="omni1" enabled="1">
+            <location x="1" y="2" z="3" w="4" />
+            <ambient r="5" g="6" b="7" a="8" />
+            <diffuse r="9" g="10" b="11" a="12" />
+            <specular r="13" g="14" b="15" a="16" />
         </omni>
-        <spot id="ss" enabled="tt" angle="ff" exponent="ff">
+        <spot id="spot1" enabled="0" angle="1" exponent="2">
             <!-- atencao, "target" e' diferente de "direction" -->
-            <location x="ff" y="ff" z="ff" />
-            <target x="ff" y="ff" z="ff" />
-            <ambient r="ff" g="ff" b="ff" a="ff" />
-            <diffuse r="ff" g="ff" b="ff" a="ff" />
-            <specular r="ff" g="ff" b="ff" a="ff" />
+            <location x="3" y="4" z="5" />
+            <target x="6" y="7" z="8" />
+            <ambient r="9" g="10" b="11" a="12" />
+            <diffuse r="13" g="14" b="15" a="16" />
+            <specular r="17" g="18" b="19" a="20" />
         </spot>
     </lights>
     <textures>
         <!-- Deve existir um ou mais blocos "texture" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
-        <texture id="ss" file="ss" />
+        <texture id="texture1" file="file1" />
     </textures>
     <materials>
         <!-- Deve existir um ou mais blocos "material" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
-        <material id="ss" shininess = "ff">
-            <emission r="ff" g="ff" b="ff" a="ff" />
-            <ambient r="ff" g="ff" b="ff" a="ff" />
-            <diffuse r="ff" g="ff" b="ff" a="ff" />
-            <specular r="ff" g="ff" b="ff" a="ff" />
+        <material id="material1" shininess = "1">
+            <emission r="2" g="3" b="4" a="5" />
+            <ambient r="6" g="7" b="8" a="9" />
+            <diffuse r="10" g="11" b="12" a="13" />
+            <specular r="14" g="15" b="16" a="17" />
         </material>
     </materials>
     <transformations>
         <!-- Deve existir um ou mais blocos "transformation" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
         <!-- Os angulos sao expressos em graus -->
-        <transformation id="ss">
+        <transformation id="transformation1">
             <!-- instrucoes a usar sem limite nem ordem -->
             <!-- deve existir pelo menos uma transformacao -->
-            <translate x="ff" y="ff" z="ff" />
-            <rotate axis="cc" angle="ff" />
-            <scale x="ff" y="ff" z="ff" />
+            <translate x="1" y="2" z="3" />
+            <rotate axis="x" angle="90" />
+            <scale x="1" y="2" z="3" />
         </transformation>
     </transformations>
     <primitives>
         <!-- Uma "primitive" e' uma primitiva e pode ser usada em nos folha -->
         <!-- Deve existir um ou mais blocos "primitive" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
-        <primitive id="ss">
+        <primitive id="primitive1">
             <!-- apenas pode existir UMA das seguintes tags: -->
             <!-- rectangle, triangle, cylinder, sphere, torus -->
             <!-- os parametros devem ser interpretados, genericamente, -->
             <!-- como em WebGL; o cilindro deve adicionalmente ter tampas -->
-            <rectangle x1="ff" y1="ff" x2="ff" y2="ff" />
-            <triangle x1="ff" y1="ff" z1="ff" x2="ff" y2="ff" z2="ff" x3="ff" y3="ff" z3="ff" />
-            <cylinder base="ff" top="ff" height="ff" slices="ii" stacks="ii" />
-            <sphere radius="ff" slices="ii" stacks="ii" />
-            <torus inner="ff" outer="ff" slices="ii" loops="ii" />
+            <rectangle x1="1" y1="2" x2="3" y2="4" />
+            <triangle x1="1" y1="2" z1="3" x2="4" y2="5" z2="6" x3="7" y3="8" z3="9" />
+            <cylinder base="1" top="2" height="3" slices="4" stacks="5" />
+            <sphere radius="1" slices="2" stacks="3" />
+            <torus inner="1" outer="2" slices="3" loops="4" />
         </primitive >
     </primitives >
     <components>
