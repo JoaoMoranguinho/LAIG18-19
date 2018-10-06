@@ -16,32 +16,32 @@
     <views default="default_view">
         <!-- tem de existir, pelo menos, uma vista de -->
         <!-- entre as seguintes (perspective ou ortho) -->
-        <perspective id="perspective1" near="1" far="2" angle="3">
-            <from x="4" y="5" z="6" />
-            <to x="7" y="8" z="9" />
+        <perspective id="perspective1" near="1" far="1" angle="0">
+            <from x="1" y="1" z="1" />
+            <to x="1" y="1" z="1" />
         </perspective>
-        <ortho id="ortho1" near="1" far="2" left="3" right="4" top="5" bottom="6" />
+        <ortho id="ortho1" near="1" far="1" left="1" right="1" top="1" bottom="1" />
     </views>
     <ambient>
-        <ambient r="1" g="2" b="3" a="4" />
-        <background r="5" g="6" b="7" a="8" />
+        <ambient r="1.0" g="1.0" b="1.0" a="0" />
+        <background r="1.0" g="1.0" b="1.0" a="0" />
     </ambient>
     <lights>
         <!-- Deve existir um ou mais blocos "omni" ou "spot" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
         <omni id="omni1" enabled="1">
-            <location x="1" y="2" z="3" w="4" />
-            <ambient r="5" g="6" b="7" a="8" />
-            <diffuse r="9" g="10" b="11" a="12" />
-            <specular r="13" g="14" b="15" a="16" />
+            <location x="3" y="3" z="3" w="1" />
+            <ambient r="1.0" g="1.0" b="1.0" a="0" />
+            <diffuse  r="1.0" g="1.0" b="1.0" a="0" />
+            <specular  r="1.0" g="1.0" b="1.0" a="0" />
         </omni>
         <spot id="spot1" enabled="0" angle="1" exponent="2">
             <!-- atencao, "target" e' diferente de "direction" -->
-            <location x="3" y="4" z="5" />
-            <target x="6" y="7" z="8" />
-            <ambient r="9" g="10" b="11" a="12" />
-            <diffuse r="13" g="14" b="15" a="16" />
-            <specular r="17" g="18" b="19" a="20" />
+            <location x="3" y="3" z="3" />
+            <target x="1" y="1" z="1" />
+            <ambient r="1.0" g="1.0" b="1.0" a="0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="0" />
+            <specular  r="1.0" g="1.0" b="1.0" a="0" />
         </spot>
     </lights>
     <textures>
@@ -53,39 +53,32 @@
         <!-- Deve existir um ou mais blocos "material" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
         <material id="material1" shininess = "1">
-            <emission r="2" g="3" b="4" a="5" />
-            <ambient r="6" g="7" b="8" a="9" />
-            <diffuse r="10" g="11" b="12" a="13" />
-            <specular r="14" g="15" b="16" a="17" />
+            <emission r="1.0" g="1.0" b="1.0" a="0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="0" />
+            <diffuse  r="1.0" g="1.0" b="1.0" a="0" />
+            <specular  r="1.0" g="1.0" b="1.0" a="0" />
         </material>
     </materials>
     <transformations>
-        <!-- Deve existir um ou mais blocos "transformation" -->
-        <!-- Os identificadores "id" nao podem ser repetidos -->
-        <!-- Os angulos sao expressos em graus -->
-        <transformation id="transformation1">
-            <!-- instrucoes a usar sem limite nem ordem -->
-            <!-- deve existir pelo menos uma transformacao -->
-            <translate x="1" y="2" z="3" />
-            <rotate axis="x" angle="90" />
+        <transformation id="transformation">
             <scale x="1" y="2" z="3" />
         </transformation>
     </transformations>
     <primitives>
         <primitive id="rectangle">
-            <rectangle x1="1" y1="2" x2="3" y2="4" />
+            <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="-0.5" />
         </primitive >
 
           <primitive id="triangle">
-             <triangle x1="1" y1="2" z1="3" x2="4" y2="5" z2="6" x3="7" y3="8" z3="9" />
+             <triangle x1="0.5" y1="0" z1="0.5" x2="-0.5" y2="0" z2="0.5" x3="0" y3="1" z3="0" />
         </primitive >
 
         <primitive id="cylinder">
-              <cylinder base="1" top="2" height="3" slices="4" stacks="5" />
+              <cylinder base="1" top="1" height="1" slices="20" stacks="20" />
         </primitive >
 
         <primitive id="sphere">
-               <sphere radius="1" slices="2" stacks="3" />
+               <sphere radius="1" slices="2" stacks="2" />
         </primitive >
 
           <primitive id="torus">
@@ -111,8 +104,28 @@
             <texture id="null"/>
 
             <children>
-                <componentref id="piramides" />
+                <componentref id="pyramids" />
                 <componentref id="cacti" />
+                <componentref id="floor" />
+            </children>
+        </component>
+
+        <component id="floor">
+            
+            <transformation>
+                <translate x="0" y="0" z="0" />
+                <rotate axis="x" angle="-90" />
+                <scale x="50" y="1" z="50" />
+            </transformation>
+            
+            <materials>
+                <material id="null" />
+            </materials>
+           
+            <texture id="null"/>
+
+            <children>
+                <primitiveref id="rectangle" />
             </children>
         </component>
 
@@ -139,7 +152,7 @@
             
             <transformation>
                 <translate x="0" y="0" z="0" />
-                <rotate axis="x" angle="0" />
+                <rotate axis="y" angle="90" />
                 <scale x="1" y="1" z="1" />
             </transformation>
             
@@ -158,7 +171,7 @@
             
             <transformation>
                 <translate x="0" y="0" z="0" />
-                <rotate axis="x" angle="0" />
+                <rotate axis="y" angle="-90" />
                 <scale x="1" y="1" z="1" />
             </transformation>
             
@@ -177,7 +190,7 @@
             
             <transformation>
                 <translate x="0" y="0" z="0" />
-                <rotate axis="x" angle="0" />
+                <rotate axis="y" angle="180" />
                 <scale x="1" y="1" z="1" />
             </transformation>
             
@@ -219,7 +232,7 @@
             
             <transformation>
                 <translate x="0" y="0" z="0" />
-                <rotate axis="x" angle="0" />
+                <rotate axis="x" angle="90" />
                 <scale x="1" y="1" z="1" />
             </transformation>
             
@@ -239,7 +252,7 @@
             <transformation>
                 <translate x="0" y="0" z="0" />
                 <rotate axis="x" angle="0" />
-                <scale x="1" y="1" z="1" />
+                <scale x="15" y="15" z="15" />
             </transformation>
             
             <materials>
@@ -257,9 +270,9 @@
         <component id="piramide2">
             
             <transformation>
-                <translate x="0" y="0" z="0" />
+                <translate x="-15" y="0" z="-15" />
                 <rotate axis="x" angle="0" />
-                <scale x="1" y="1" z="1" />
+                <scale x="10" y="10" z="10" />
             </transformation>
             
             <materials>
@@ -278,9 +291,9 @@
         <component id="piramide3">
             
             <transformation>
-                <translate x="0" y="0" z="0" />
+                <translate x="12.5" y="0" z="12.5" />
                 <rotate axis="x" angle="0" />
-                <scale x="1" y="1" z="1" />
+                <scale x="5" y="5" z="5" />
             </transformation>
             
             <materials>
@@ -319,9 +332,9 @@
         <component id="braco_parte_vertical">
             
             <transformation>
-                <translate x="0" y="0" z="0" />
-                <rotate axis="x" angle="0" />
-                <scale x="1" y="1" z="1" />
+                <translate x="0" y="2.5" z="0" />
+                <rotate axis="x" angle="-90" />
+                <scale x="0.5" y="0.5" z="1.5" />
             </transformation>
             
             <materials>
@@ -338,9 +351,9 @@
         <component id="braco_parte_horizontal">
             
             <transformation>
-                <translate x="0" y="0" z="0" />
+                <translate x="0" y="2.5" z="0" />
                 <rotate axis="x" angle="0" />
-                <scale x="1" y="1" z="1" />
+                <scale x="0.5" y="0.5" z="2" />
             </transformation>
             
             <materials>
@@ -357,7 +370,7 @@
         <component id="braco_articulacao">
             
             <transformation>
-                <translate x="0" y="0" z="0" />
+                <translate x="0" y="2.5" z="2" />
                 <rotate axis="x" angle="0" />
                 <scale x="1" y="1" z="1" />
             </transformation>
@@ -376,7 +389,7 @@
         <component id="braco_topo">
             
             <transformation>
-                <translate x="0" y="0" z="0" />
+                <translate x="0" y="4" z="2" />
                 <rotate axis="x" angle="0" />
                 <scale x="1" y="1" z="1" />
             </transformation>
@@ -417,8 +430,8 @@
         <component id="braco2">
             
             <transformation>
-                <translate x="0" y="0" z="0" />
-                <rotate axis="x" angle="0" />
+                <translate x="0" y="1.5" z="0" />
+                <rotate axis="y" angle="180" />
                 <scale x="1" y="1" z="1" />
             </transformation>
             
@@ -460,9 +473,9 @@
         <component id="corpo_parte1">
             
             <transformation>
-                <translate x="0" y="0" z="0" />
-                <rotate axis="x" angle="0" />
-                <scale x="1" y="1" z="1" />
+                <translate x="0" y="0" z="0"  />
+                <rotate axis="x" angle="-90" />
+                <scale x="0.75" y="6" z="0.75"/>
             </transformation>
             
             <materials>
@@ -520,9 +533,9 @@
         <component id="cactus_1">
             
             <transformation>
-                <translate x="0" y="0" z="0" />
+                <translate x="15" y="0" z="7.5" />
                 <rotate axis="x" angle="0" />
-                <scale x="1" y="1" z="1" />
+                <scale x="0.25" y="0.25" z="0.25" />
             </transformation>
             
             <materials>
@@ -540,9 +553,9 @@
          <component id="cactus_2">
             
             <transformation>
-                <translate x="0" y="0" z="0" />
+                <translate x="-15" y="0" z="5" />
                 <rotate axis="x" angle="0" />
-                <scale x="1" y="1" z="1" />
+                <scale x="0.2" y="0.2" z="0.2" />
             </transformation>
             
             <materials>
@@ -560,9 +573,9 @@
         <component id="cactus_3">
             
             <transformation>
-                <translate x="0" y="0" z="0" />
+                <translate x="-20" y="0" z="7.5" />
                 <rotate axis="x" angle="0" />
-                <scale x="1" y="1" z="1" />
+                <scale x="0.3" y="0.3" z="0.3" />
             </transformation>
             
             <materials>
@@ -580,9 +593,9 @@
         <component id="cactus_4">
             
             <transformation>
-                <translate x="0" y="0" z="0" />
+                <translate x="5" y="0" z="15" />
                 <rotate axis="x" angle="0" />
-                <scale x="1" y="1" z="1" />
+                <scale x="0.2" y="0.2" z="0.2"/>
             </transformation>
             
             <materials>
@@ -600,9 +613,9 @@
         <component id="cactus_5">
             
             <transformation>
-                <translate x="0" y="0" z="0" />
+                <translate x="5" y="0" z="10" />
                 <rotate axis="x" angle="0" />
-                <scale x="1" y="1" z="1" />
+                <scale x="0.2" y="0.2" z="0.2" />
             </transformation>
             
             <materials>
@@ -620,9 +633,9 @@
         <component id="cactus_6">
             
             <transformation>
-                <translate x="0" y="0" z="0" />
+                <translate x="-10" y="0" z="20" />
                 <rotate axis="x" angle="0" />
-                <scale x="1" y="1" z="1" />
+                <scale x="0.25" y="0.25" z="0.25" />
             </transformation>
             
             <materials>
@@ -640,9 +653,9 @@
          <component id="cactus_7">
             
             <transformation>
-                <translate x="0" y="0" z="0" />
+                <translate x="20" y="0" z="5" />
                 <rotate axis="x" angle="0" />
-                <scale x="1" y="1" z="1" />
+                <scale x="0.25" y="0.25" z="0.25"/>
             </transformation>
             
             <materials>
@@ -660,9 +673,9 @@
         <component id="cactus_8">
             
             <transformation>
-                <translate x="0" y="0" z="0" />
+                <translate x="20" y="0" z="-5" />
                 <rotate axis="x" angle="0" />
-                <scale x="1" y="1" z="1" />
+                <scale x="0.3" y="0.3" z="0.3" />
             </transformation>
             
             <materials>
@@ -680,9 +693,9 @@
         <component id="cactus_9">
             
             <transformation>
-                <translate x="0" y="0" z="0" />
+                <translate x="0" y="0" z="-15" />
                 <rotate axis="x" angle="0" />
-                <scale x="1" y="1" z="1" />
+                <scale x="0.2" y="0.2" z="0.2" />
             </transformation>
             
             <materials>
@@ -700,9 +713,9 @@
         <component id="cactus_10">
             
             <transformation>
-                <translate x="0" y="0" z="0" />
+                <translate x="7.5" y="0" z="-17.5" />
                 <rotate axis="x" angle="0" />
-                <scale x="1" y="1" z="1" />
+                <scale x="0.25" y="0.25" z="0.25" />
             </transformation>
             
             <materials>
