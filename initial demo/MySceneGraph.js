@@ -620,9 +620,9 @@ class MySceneGraph {
         for (var i = 0; i < children.length; i++) {
 
             var transformationId = this.reader.getString(children[i], 'id');
-            
+
             console.log(transformationId);
-            
+
             grandChildren = children[i].children;
             nodeNames = [];
             for (var j = 0; j < grandChildren.length; j++) {
@@ -646,17 +646,17 @@ class MySceneGraph {
             var y_scale = this.reader.getFloat(grandChildren[scaleIndex], 'y');
             var z_scale = this.reader.getFloat(grandChildren[scaleIndex], 'z');
             console.log("scale: " + x_scale + " " + y_scale + " " + z_scale);
-            
+
         }
 
         this.log("Parsed transformations");
         return null;
     }
 
-/**
-     * Parses the <PRIMITIVES> node.
-     * @param {primitives block element} primitivesNode
-     */
+    /**
+         * Parses the <PRIMITIVES> node.
+         * @param {primitives block element} primitivesNode
+         */
     parsePrimitives(primitivesNode) {
 
         var children = primitivesNode.children;
@@ -671,10 +671,97 @@ class MySceneGraph {
 
         for (var i = 0; i < children.length; i++) {
 
+            var primitiveId = this.reader.getString(children[i], 'id');
+
+            console.log(primitiveId);
+
+            grandChildren = children[i].children;
+            nodeNames = [];
+            for (var j = 0; j < grandChildren.length; j++) {
+                nodeNames.push(grandChildren[j].nodeName);
+            }
+
+            var rectangleIndex = nodeNames.indexOf("rectangle");
+            var triangleIndex = nodeNames.indexOf("triangle");
+            var cylinderIndex = nodeNames.indexOf("cylinder");
+            var sphereIndex = nodeNames.indexOf("sphere");
+            var torusIndex = nodeNames.indexOf("torus");
+
+            if(rectangleIndex != -1){
+            var x1_rectangle = this.reader.getFloat(grandChildren[rectangleIndex], 'x1');
+            var y1_rectangle = this.reader.getFloat(grandChildren[rectangleIndex], 'y1');
+            var x2_rectangle = this.reader.getFloat(grandChildren[rectangleIndex], 'x2');
+            var y2_rectangle = this.reader.getFloat(grandChildren[rectangleIndex], 'y2');
+            console.log("rectangle: " + x1_rectangle + " " + y1_rectangle + " " + x2_rectangle + " " + y2_rectangle);
+            }
+
+            if(triangleIndex != -1){
+            var x1_triangle = this.reader.getFloat(grandChildren[triangleIndex], 'x1');
+            var y1_triangle = this.reader.getFloat(grandChildren[triangleIndex], 'y1');
+            var z1_triangle = this.reader.getFloat(grandChildren[triangleIndex], 'z1');
+            var x2_triangle = this.reader.getFloat(grandChildren[triangleIndex], 'x2');
+            var y2_triangle = this.reader.getFloat(grandChildren[triangleIndex], 'y2');
+            var z2_triangle = this.reader.getFloat(grandChildren[triangleIndex], 'z2');
+            var x3_triangle = this.reader.getFloat(grandChildren[triangleIndex], 'x3');
+            var y3_triangle = this.reader.getFloat(grandChildren[triangleIndex], 'y3');
+            var z3_triangle = this.reader.getFloat(grandChildren[triangleIndex], 'z3');
+
+            console.log("triangle point1: " + x1_triangle + " " + y1_triangle + " " + z1_triangle);
+            console.log("triangle point2: " + x2_triangle + " " + y2_triangle + " " + z2_triangle);
+            console.log("triangle point3: " + x3_triangle + " " + y3_triangle + " " + z3_triangle);
+            }
+
+            if(cylinderIndex != -1){
+            var base_cylinder = this.reader.getFloat(grandChildren[cylinderIndex], 'base');
+            var top_cylinder = this.reader.getFloat(grandChildren[cylinderIndex], 'top');
+            var height_cylinder = this.reader.getFloat(grandChildren[cylinderIndex], 'height');
+            var slices_cylinder = this.reader.getFloat(grandChildren[cylinderIndex], 'slices');
+            var stacks_cylinder = this.reader.getFloat(grandChildren[cylinderIndex], 'stacks');
+            console.log("cylinder: " + base_cylinder + " " + top_cylinder + " " + height_cylinder + " " + slices_cylinder + " " + stacks_cylinder);
+            }
+
+            if(sphereIndex != -1){
+            var radius_sphere = this.reader.getFloat(grandChildren[sphereIndex], 'radius');
+            var slices_sphere = this.reader.getFloat(grandChildren[sphereIndex], 'slices');
+            var stacks_sphere = this.reader.getFloat(grandChildren[sphereIndex], 'stacks');
+            console.log("sphere: " + radius_sphere + " " + slices_sphere + " " + stacks_sphere);
+            }
+
+            if(torusIndex != -1){
+            var inner_torus = this.reader.getFloat(grandChildren[torusIndex], 'inner');
+            var outer_torus = this.reader.getFloat(grandChildren[torusIndex], 'outer');
+            var slices_torus = this.reader.getFloat(grandChildren[torusIndex], 'slices');
+            var loops_torus = this.reader.getFloat(grandChildren[torusIndex], 'loops');
+            console.log("torus: " + inner_torus + " " + outer_torus + " " + slices_torus + " " + loops_torus);
+            }
+        }
+
+        this.log("Parsed primitives");
+        return null;
+    }
+
+    /**
+     * Parses the <COMPONENTS> node.
+     * @param {components block element} componentsNode
+     */
+    parseComponents(componentsNode) {
+
+        var children = componentsNode.children;
+
+        var grandChildren = [];
+        var nodeNames = [];
+
+
+        for (var k = 0; k < children.length; k++) {
+            nodeNames.push(children[k].nodeName);
+        }
+
+        for (var i = 0; i < children.length; i++) {
+
             var transformationId = this.reader.getString(children[i], 'id');
-            
+
             console.log(transformationId);
-            
+
             grandChildren = children[i].children;
             nodeNames = [];
             for (var j = 0; j < grandChildren.length; j++) {
@@ -693,16 +780,16 @@ class MySceneGraph {
             var y2_rectangle = this.reader.getFloat(grandChildren[rectangleIndex], 'y2');
             console.log("rectangle: " + x1_rectangle + " " + y1_rectangle + " " + x2_rectangle + " " + y2_rectangle);
 
-            var x1_triangle = this.reader.getString(grandChildren[triangleIndex], 'x1');
-            var y1_triangle = this.reader.getString(grandChildren[triangleIndex], 'y1');
-            var z1_triangle = this.reader.getString(grandChildren[triangleIndex], 'z1');
-            var x2_triangle = this.reader.getString(grandChildren[triangleIndex], 'x2');
-            var y2_triangle = this.reader.getString(grandChildren[triangleIndex], 'y2');
-            var z2_triangle = this.reader.getString(grandChildren[triangleIndex], 'z2');
-            var x3_triangle = this.reader.getString(grandChildren[triangleIndex], 'x3');
-            var y3_triangle = this.reader.getString(grandChildren[triangleIndex], 'y3');
-            var z3_triangle = this.reader.getString(grandChildren[triangleIndex], 'z3');
-            
+            var x1_triangle = this.reader.getFloat(grandChildren[triangleIndex], 'x1');
+            var y1_triangle = this.reader.getFloat(grandChildren[triangleIndex], 'y1');
+            var z1_triangle = this.reader.getFloat(grandChildren[triangleIndex], 'z1');
+            var x2_triangle = this.reader.getFloat(grandChildren[triangleIndex], 'x2');
+            var y2_triangle = this.reader.getFloat(grandChildren[triangleIndex], 'y2');
+            var z2_triangle = this.reader.getFloat(grandChildren[triangleIndex], 'z2');
+            var x3_triangle = this.reader.getFloat(grandChildren[triangleIndex], 'x3');
+            var y3_triangle = this.reader.getFloat(grandChildren[triangleIndex], 'y3');
+            var z3_triangle = this.reader.getFloat(grandChildren[triangleIndex], 'z3');
+
             console.log("triangle point1: " + x1_triangle + " " + y1_triangle + " " + z1_triangle);
             console.log("triangle point2: " + x2_triangle + " " + y2_triangle + " " + z2_triangle);
             console.log("triangle point3: " + x3_triangle + " " + y3_triangle + " " + z3_triangle);
@@ -713,10 +800,20 @@ class MySceneGraph {
             var slices_cylinder = this.reader.getFloat(grandChildren[cylinderIndex], 'slices');
             var stacks_cylinder = this.reader.getFloat(grandChildren[cylinderIndex], 'stacks');
             console.log("cylinder: " + base_cylinder + " " + top_cylinder + " " + height_cylinder + " " + slices_cylinder + " " + stacks_cylinder);
-            
+
+            var radius_sphere = this.reader.getFloat(grandChildren[sphereIndex], 'radius');
+            var slices_sphere = this.reader.getFloat(grandChildren[sphereIndex], 'slices');
+            var stacks_sphere = this.reader.getFloat(grandChildren[sphereIndex], 'stacks');
+            console.log("sphere: " + radius_sphere + " " + slices_sphere + " " + stacks_sphere);
+
+            var inner_torus = this.reader.getFloat(grandChildren[torusIndex], 'inner');
+            var outer_torus = this.reader.getFloat(grandChildren[torusIndex], 'outer');
+            var slices_torus = this.reader.getFloat(grandChildren[torusIndex], 'slices');
+            var loops_torus = this.reader.getFloat(grandChildren[torusIndex], 'loops');
+            console.log("torus: " + inner_torus + " " + outer_torus + " " + slices_torus + " " + loops_torus);
         }
 
-        this.log("Parsed transformations");
+        this.log("Parsed components");
         return null;
     }
 
