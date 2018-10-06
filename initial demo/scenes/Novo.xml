@@ -113,9 +113,8 @@
         <component id="floor">
             
             <transformation>
-                <translate x="0" y="0" z="0" />
-                <rotate axis="x" angle="-90" />
                 <scale x="50" y="1" z="50" />
+                <rotate axis="x" angle="-90" />
             </transformation>
             
             <materials>
@@ -132,8 +131,6 @@
         <component id="lado1">
             
             <transformation>
-                <translate x="0" y="0" z="0" />
-                <rotate axis="x" angle="0" />
                 <scale x="1" y="1" z="1" />
             </transformation>
             
@@ -151,9 +148,7 @@
         <component id="lado2">
             
             <transformation>
-                <translate x="0" y="0" z="0" />
                 <rotate axis="y" angle="90" />
-                <scale x="1" y="1" z="1" />
             </transformation>
             
             <materials>
@@ -170,9 +165,7 @@
         <component id="lado3">
             
             <transformation>
-                <translate x="0" y="0" z="0" />
                 <rotate axis="y" angle="-90" />
-                <scale x="1" y="1" z="1" />
             </transformation>
             
             <materials>
@@ -189,9 +182,7 @@
         <component id="lado4">
             
             <transformation>
-                <translate x="0" y="0" z="0" />
                 <rotate axis="y" angle="180" />
-                <scale x="1" y="1" z="1" />
             </transformation>
             
             <materials>
@@ -231,9 +222,7 @@
         <component id="base">
             
             <transformation>
-                <translate x="0" y="0" z="0" />
                 <rotate axis="x" angle="90" />
-                <scale x="1" y="1" z="1" />
             </transformation>
             
             <materials>
@@ -250,8 +239,6 @@
         <component id="piramide1">
             
             <transformation>
-                <translate x="0" y="0" z="0" />
-                <rotate axis="x" angle="0" />
                 <scale x="15" y="15" z="15" />
             </transformation>
             
@@ -271,7 +258,6 @@
             
             <transformation>
                 <translate x="-15" y="0" z="-15" />
-                <rotate axis="x" angle="0" />
                 <scale x="10" y="10" z="10" />
             </transformation>
             
@@ -292,7 +278,6 @@
             
             <transformation>
                 <translate x="12.5" y="0" z="12.5" />
-                <rotate axis="x" angle="0" />
                 <scale x="5" y="5" z="5" />
             </transformation>
             
@@ -474,8 +459,10 @@
             
             <transformation>
                 <translate x="0" y="0" z="0"  />
-                <rotate axis="x" angle="-90" />
+
                 <scale x="0.75" y="6" z="0.75"/>
+                <rotate axis="x" angle="-90" />
+                
             </transformation>
             
             <materials>
