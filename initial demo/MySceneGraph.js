@@ -27,6 +27,8 @@ class MySceneGraph {
         scene.graph = this;
 
         this.nodes = [];
+        this.materials = [];
+        this.textures = [];
 
         this.idRoot = null;                    // The id of the root element.
 
@@ -544,10 +546,14 @@ class MySceneGraph {
 
             console.log(text_id + " " + path);
 
-            //FALTA GUARDAR AS TEXTURAS, HOW THO
+            var texture = new CGFtexture(this.scene, "scenes/images/" + path);
+
+            this.textures[text_id] = texture;
+
 
         }
         console.log("Parsed textures");
+        console.log(this.textures);
 
         return null;
     }
@@ -608,7 +614,16 @@ class MySceneGraph {
             var b_specular = this.reader.getFloat(grandChildren[specularIndex], 'b');
             var a_specular = this.reader.getFloat(grandChildren[specularIndex], 'a');
             console.log("specular: " + r_specular + " " + g_specular + " " + b_specular + " " + a_specular);
+
+            var material = new CGFappearance(this);
+
+            material.setEmission(r_emission, g_emission, b_emission, a_emission);
+            material.setAmbient(r_ambient, g_ambient, b_ambient, a_ambient);
+            material.setDiffuse(r_diffuse, g_diffuse, b_diffuse, a_diffuse);
+            material.setSpecular(r_specular, g_specular, b_specular, a_specular);
+            this.materials[materialId] = material;
         }
+        console.log(this.materials);
 
         this.log("Parsed materials");
         return null;
@@ -645,20 +660,23 @@ class MySceneGraph {
             var translateIndex = nodeNames.indexOf("translate");
             var rotateIndex = nodeNames.indexOf("rotate");
             var scaleIndex = nodeNames.indexOf("scale");
-
-            var x_translate = this.reader.getFloat(grandChildren[translateIndex], 'x');
-            var y_translate = this.reader.getFloat(grandChildren[translateIndex], 'y');
-            var z_translate = this.reader.getFloat(grandChildren[translateIndex], 'z');
-            console.log("translate: " + x_translate + " " + y_translate + " " + z_translate);
-
-            var axis_rotate = this.reader.getString(grandChildren[rotateIndex], 'axis');
-            var angle_rotate = this.reader.getFloat(grandChildren[rotateIndex], 'angle');
-            console.log("rotate: " + axis_rotate + " " + angle_rotate);
-
-            var x_scale = this.reader.getFloat(grandChildren[scaleIndex], 'x');
-            var y_scale = this.reader.getFloat(grandChildren[scaleIndex], 'y');
-            var z_scale = this.reader.getFloat(grandChildren[scaleIndex], 'z');
-            console.log("scale: " + x_scale + " " + y_scale + " " + z_scale);
+            if (translateIndex != -1) {
+                var x_translate = this.reader.getFloat(grandChildren[translateIndex], 'x');
+                var y_translate = this.reader.getFloat(grandChildren[translateIndex], 'y');
+                var z_translate = this.reader.getFloat(grandChildren[translateIndex], 'z');
+                console.log("translate: " + x_translate + " " + y_translate + " " + z_translate);
+            }
+            if (rotateIndex != -1) {
+                var axis_rotate = this.reader.getString(grandChildren[rotateIndex], 'axis');
+                var angle_rotate = this.reader.getFloat(grandChildren[rotateIndex], 'angle');
+                console.log("rotate: " + axis_rotate + " " + angle_rotate);
+            }
+            if (scaleIndex != -1) {
+                var x_scale = this.reader.getFloat(grandChildren[scaleIndex], 'x');
+                var y_scale = this.reader.getFloat(grandChildren[scaleIndex], 'y');
+                var z_scale = this.reader.getFloat(grandChildren[scaleIndex], 'z');
+                console.log("scale: " + x_scale + " " + y_scale + " " + z_scale);
+            }
 
         }
 
@@ -765,13 +783,19 @@ class MySceneGraph {
         var nodeNames = [];
 
 
+
         for (var k = 0; k < children.length; k++) {
             nodeNames.push(children[k].nodeName);
         }
 
         for (var i = 0; i < children.length; i++) {
 
+
+
+
             var componentId = this.reader.getString(children[i], 'id');
+
+            var node = new Node(componentId);
 
             console.log("component ID: " + componentId);
 
@@ -779,6 +803,7 @@ class MySceneGraph {
             nodeNames = [];
             for (var j = 0; j < grandChildren.length; j++) {
                 nodeNames.push(grandChildren[j].nodeName);
+
             }
 
             var transformationIndex = nodeNames.indexOf("transformation");
@@ -819,39 +844,37 @@ class MySceneGraph {
 
             var materialsIndex = nodeNames.indexOf("materials");
             var grandgrandchildren = grandChildren[materialsIndex].children;
-            
+
             for (var j = 0; j < grandgrandchildren.length; j++) {
                 var materialID = this.reader.getString(grandgrandchildren[j], 'id');
+                node.setMaterial(materialID);
+
                 console.log("material ID: " + materialID);
             }
 
             var textureIndex = nodeNames.indexOf("texture");
             var textureID = this.reader.getString(grandChildren[textureIndex], 'id');
+            node.setTexture(textureID);
             console.log("texure ID: " + textureID);
 
             var childrenIndex = nodeNames.indexOf("children");
             var grandgrandchildren = grandChildren[childrenIndex].children;
-            
+
+
             for (var j = 0; j < grandgrandchildren.length; j++) {
                 var primitiverefID = this.reader.getString(grandgrandchildren[j], 'id');
+                node.push(primitiverefID);
                 console.log("primitiveref ID: " + primitiverefID);
             }
-
+            this.nodes[componentId] = node;
         }
 
+        console.log(this.nodes);
         this.log("Parsed components");
         return null;
     }
 
-    /**
-     * Parses the <NODES> block.
-     * @param {nodes block element} nodesNode
-     */
-    parseNodes(nodesNode) {
-        // TODO: Parse block
-        this.log("Parsed nodes");
-        return null;
-    }
+
 
     /*
      * Callback to be executed on any read error, showing an error on the console.
@@ -884,8 +907,10 @@ class MySceneGraph {
     displayScene() {
         // entry point for graph rendering
         //TODO: Render loop starting at root of graph
+        // console.log( this.materials["default_material"]);
+        this.processagrafo("root", this.materials["default_material"], this.textures["default_texture"]);
 
-        this.processagrafo(root, default_material, default_texture);
+
 
     }
 
@@ -893,18 +918,25 @@ class MySceneGraph {
         var material = MatIni;
         var texture = TextIni;
         if (nodeName != null) {
-            var node = this.grafo[nodeName];
-            if (node.material != null) // nao devia ser node.mat ?
-                material = node.Material;
+            var node = this.nodes[nodeName];
+
+            if (node.getMaterial() != null)
+                material = this.materials[node.getMaterial()];
 
             if (material != null)
-                this.scene.applyMaterial(material);
-            // fazer o msm para a textura
+               material.apply();
+
+            if (node.texture != null)
+                texture = node.tex;
+
+            if (texture != null)
+                this.scene.applyTexture(texture);
         }
 
         this.scene.mulMatrix(node.mat);
 
-        for (i = 0; i < node.descendents.length; i++) {
+
+        for (var i = 0; i < node.descendents.length; i++) {
             this.scene.pushMatrix();
             this.scene.applyMaterial(material);
             this.processagrafo(node.descendents[i]);

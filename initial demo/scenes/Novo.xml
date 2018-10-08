@@ -50,11 +50,12 @@
         <texture id="sand" file="sand.png" />
         <texture id="pyramidtex" file="pyramid.png" />
         <texture id="cactustex" file="cactus.png" />
+        <texture id= "default_texture" file="default_texture.png"/>
     </textures>
     <materials>
         <!-- Deve existir um ou mais blocos "material" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
-        <material id="material1" shininess = "1">
+        <material id="default_material" shininess = "1">
             <emission r="1.0" g="1.0" b="1.0" a="0" />
             <ambient r="1.0" g="1.0" b="1.0" a="0" />
             <diffuse  r="1.0" g="1.0" b="1.0" a="0" />
@@ -100,7 +101,7 @@
             </transformation>
             
             <materials>
-                <material id="null" />
+                <material id="default_material" />
             </materials>
            
             <texture id="null"/>
