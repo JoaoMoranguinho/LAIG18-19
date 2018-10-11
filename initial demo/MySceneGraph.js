@@ -920,7 +920,7 @@ class MySceneGraph {
         if (nodeName != null) {
             var node = this.nodes[nodeName];
 
-            if (node.getMaterial() != null)
+           /* if (node.getMaterial() != null)
                 material = this.materials[node.getMaterial()];
 
             if (material != null)
@@ -930,22 +930,22 @@ class MySceneGraph {
                 texture = node.tex;
 
             if (texture != null)
-                this.scene.applyTexture(texture);
+                this.scene.applyTexture(texture);*/
         }
 
-        this.scene.mulMatrix(node.mat);
+       // this.scene.mulMatrix(node.mat);
 
 
-        for (var i = 0; i < node.descendents.length; i++) {
+        for (var i = 0; i < node.getchildren_length; i++) {
             this.scene.pushMatrix();
-            this.scene.applyMaterial(material);
-            this.processagrafo(node.descendents[i]);
+           // this.scene.applyMaterial(material);
+            this.processagrafo(node.children[i],this.materials["default_material"], this.textures["default_texture"]);
             this.popMatrix();
         }
 
-        if (node.geom != null) {
+       /* if (node.geom != null) {
             node.geom.display();
-        }
+        }*/
 
     }
 }

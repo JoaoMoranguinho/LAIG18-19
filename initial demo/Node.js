@@ -39,5 +39,9 @@ class Node
         return this.mat;
     }
 
+    getchildren_length()
+    {
+        return this.children.length;
+    }
     
 }

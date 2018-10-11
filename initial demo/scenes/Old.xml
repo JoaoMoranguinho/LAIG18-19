@@ -12,19 +12,19 @@
 <yas>
     <!-- deve definir-se um objeto para raiz da arvore, assim -->
     <!-- como o comprimento dos tres eixos (cilindros) -->
-    <scene root="root" axis_length="5.0" />
-    <views default="perspective2">
+    <scene root="TEST" axis_length="1.0" />
+    <views default="default_view">
         <!-- tem de existir, pelo menos, uma vista de -->
         <!-- entre as seguintes (perspective ou ortho) -->
-        <perspective id="perspective2" near="0.1" far="1000.0" angle="23.0">
-            <from x="100.0" y="100.0" z="100.0" />
-            <to x="0.0" y="0.0" z="0.0" />
+        <perspective id="perspective1" near="1" far="1" angle="0">
+            <from x="1" y="1" z="1" />
+            <to x="1" y="1" z="1" />
         </perspective>
         <ortho id="ortho1" near="1" far="1" left="1" right="1" top="1" bottom="1" />
     </views>
     <ambient>
-        <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
-        <background r="0.529412" g="0.692237" b="0.921569" a="1.0" />
+        <ambient r="1.0" g="1.0" b="1.0" a="0" />
+        <background r="1.0" g="1.0" b="1.0" a="0" />
     </ambient>
     <lights>
         <!-- Deve existir um ou mais blocos "omni" ou "spot" -->
@@ -32,16 +32,16 @@
         <omni id="omni1" enabled="1">
             <location x="3" y="3" z="3" w="1" />
             <ambient r="1.0" g="1.0" b="1.0" a="0" />
-            <diffuse r="1.0" g="1.0" b="1.0" a="0" />
-            <specular r="1.0" g="1.0" b="1.0" a="0" />
+            <diffuse  r="1.0" g="1.0" b="1.0" a="0" />
+            <specular  r="1.0" g="1.0" b="1.0" a="0" />
         </omni>
         <spot id="spot1" enabled="0" angle="1" exponent="2">
             <!-- atencao, "target" e' diferente de "direction" -->
-            <location x="3" y="3" z="3" w="1"/>
+            <location x="3" y="3" z="3" />
             <target x="1" y="1" z="1" />
             <ambient r="1.0" g="1.0" b="1.0" a="0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="0" />
-            <specular r="1.0" g="1.0" b="1.0" a="0" />
+            <specular  r="1.0" g="1.0" b="1.0" a="0" />
         </spot>
     </lights>
     <textures>
@@ -50,15 +50,16 @@
         <texture id="sand" file="sand.png" />
         <texture id="pyramidtex" file="pyramid.png" />
         <texture id="cactustex" file="cactus.png" />
+        <texture id= "default_texture" file="default_texture.png"/>
     </textures>
     <materials>
         <!-- Deve existir um ou mais blocos "material" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
-        <material id="material1" shininess = "1">
+        <material id="default_material" shininess = "1">
             <emission r="1.0" g="1.0" b="1.0" a="0" />
             <ambient r="1.0" g="1.0" b="1.0" a="0" />
-            <diffuse r="1.0" g="1.0" b="1.0" a="0" />
-            <specular r="1.0" g="1.0" b="1.0" a="0" />
+            <diffuse  r="1.0" g="1.0" b="1.0" a="0" />
+            <specular  r="1.0" g="1.0" b="1.0" a="0" />
         </material>
     </materials>
     <transformations>
@@ -71,58 +72,58 @@
             <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="-0.5" />
         </primitive >
 
-        <primitive id="triangle">
-            <triangle x1="0.5" y1="0" z1="0.5" x2="-0.5" y2="0" z2="0.5" x3="0" y3="1" z3="0" />
+          <primitive id="triangle">
+             <triangle x1="0.5" y1="0" z1="0.5" x2="-0.5" y2="0" z2="0.5" x3="0" y3="1" z3="0" />
         </primitive >
 
         <primitive id="cylinder">
-            <cylinder base="1" top="1" height="1" slices="20" stacks="20" />
+              <cylinder base="1" top="1" height="1" slices="20" stacks="20" />
         </primitive >
 
         <primitive id="sphere">
-            <sphere radius="1" slices="2" stacks="2" />
+               <sphere radius="1" slices="2" stacks="2" />
         </primitive >
 
-        <primitive id="torus">
-            <torus inner="1" outer="2" slices="3" loops="4" />
+          <primitive id="torus">
+               <torus inner="1" outer="2" slices="3" loops="4" />
         </primitive >
-
+        
 
 
     </primitives >
     <components>
         <component id="root">
-
+            
             <transformation>
                 <translate x="0" y="0" z="0" />
                 <rotate axis="x" angle="0" />
                 <scale x="1" y="1" z="1" />
             </transformation>
-
+            
             <materials>
-                <material id="null" />
+                <material id="default_material" />
             </materials>
-
+           
             <texture id="null"/>
 
             <children>
-                <componentref id="piramides" />
+                <componentref id="pyramids" />
                 <componentref id="cacti" />
                 <componentref id="floor" />
             </children>
         </component>
 
         <component id="floor">
-
+            
             <transformation>
                 <scale x="50" y="1" z="50" />
                 <rotate axis="x" angle="-90" />
             </transformation>
-
+            
             <materials>
                 <material id="null" />
             </materials>
-
+           
             <texture id="sand"/>
 
             <children>
@@ -131,15 +132,15 @@
         </component>
 
         <component id="lado1">
-
+            
             <transformation>
                 <scale x="1" y="1" z="1" />
             </transformation>
-
+            
             <materials>
                 <material id="null" />
             </materials>
-
+           
             <texture id="inherit"/>
 
             <children>
@@ -148,15 +149,15 @@
         </component>
 
         <component id="lado2">
-
+            
             <transformation>
                 <rotate axis="y" angle="90" />
             </transformation>
-
+            
             <materials>
                 <material id="null" />
             </materials>
-
+           
             <texture id="inherit"/>
 
             <children>
@@ -165,15 +166,15 @@
         </component>
 
         <component id="lado3">
-
+            
             <transformation>
                 <rotate axis="y" angle="-90" />
             </transformation>
-
+            
             <materials>
                 <material id="null" />
             </materials>
-
+           
             <texture id="inherit"/>
 
             <children>
@@ -182,35 +183,35 @@
         </component>
 
         <component id="lado4">
-
+            
             <transformation>
                 <rotate axis="y" angle="180" />
             </transformation>
-
+            
             <materials>
                 <material id="null" />
             </materials>
-
+           
             <texture id="inherit"/>
 
             <children>
                 <primitiveref id="triangle" />
             </children>
-
+            
         </component>
 
         <component id="lados">
-
+            
             <transformation>
                 <translate x="0" y="0" z="0" />
                 <rotate axis="x" angle="0" />
                 <scale x="1" y="1" z="1" />
             </transformation>
-
+            
             <materials>
                 <material id="null" />
             </materials>
-
+           
             <texture id="inherit"/>
 
             <children>
@@ -222,15 +223,15 @@
         </component>
 
         <component id="base">
-
+            
             <transformation>
                 <rotate axis="x" angle="90" />
             </transformation>
-
+            
             <materials>
                 <material id="null" />
             </materials>
-
+           
             <texture id="inherit"/>
 
             <children>
@@ -239,15 +240,15 @@
         </component>
 
         <component id="piramide1">
-
+            
             <transformation>
                 <scale x="15" y="15" z="15" />
             </transformation>
-
+            
             <materials>
                 <material id="null" />
             </materials>
-
+           
             <texture id="inherit"/>
 
             <children>
@@ -257,36 +258,36 @@
         </component>
 
         <component id="piramide2">
-
+            
             <transformation>
                 <translate x="-15" y="0" z="-15" />
                 <scale x="10" y="10" z="10" />
             </transformation>
-
+            
             <materials>
                 <material id="null" />
             </materials>
-
+           
             <texture id="inherit"/>
 
             <children>
                 <componentref id="lados" />
                 <componentref id="base" />
             </children>
-
+        
         </component>
 
         <component id="piramide3">
-
+            
             <transformation>
                 <translate x="12.5" y="0" z="12.5" />
                 <scale x="5" y="5" z="5" />
             </transformation>
-
+            
             <materials>
                 <material id="null" />
             </materials>
-
+           
             <texture id="inherit"/>
 
             <children>
@@ -296,17 +297,17 @@
         </component>
 
         <component id="piramides">
-
+            
             <transformation>
                 <translate x="0" y="0" z="0" />
                 <rotate axis="x" angle="0" />
                 <scale x="1" y="1" z="1" />
             </transformation>
-
+            
             <materials>
                 <material id="null" />
             </materials>
-
+           
             <texture id="pyramidtex"/>
 
             <children>
@@ -317,17 +318,17 @@
         </component>
 
         <component id="braco_parte_vertical">
-
+            
             <transformation>
                 <translate x="0" y="2.5" z="0" />
                 <rotate axis="x" angle="-90" />
                 <scale x="0.5" y="0.5" z="1.5" />
             </transformation>
-
+            
             <materials>
                 <material id="null" />
             </materials>
-
+           
             <texture id="inherit"/>
 
             <children>
@@ -336,17 +337,17 @@
         </component>
 
         <component id="braco_parte_horizontal">
-
+            
             <transformation>
                 <translate x="0" y="2.5" z="0" />
                 <rotate axis="x" angle="0" />
                 <scale x="0.5" y="0.5" z="2" />
             </transformation>
-
+            
             <materials>
                 <material id="null" />
             </materials>
-
+           
             <texture id="inherit"/>
 
             <children>
@@ -355,17 +356,17 @@
         </component>
 
         <component id="braco_articulacao">
-
+            
             <transformation>
                 <translate x="0" y="2.5" z="2" />
                 <rotate axis="x" angle="0" />
                 <scale x="1" y="1" z="1" />
             </transformation>
-
+            
             <materials>
                 <material id="null" />
             </materials>
-
+           
             <texture id="inherit"/>
 
             <children>
@@ -374,17 +375,17 @@
         </component>
 
         <component id="braco_topo">
-
+            
             <transformation>
                 <translate x="0" y="4" z="2" />
                 <rotate axis="x" angle="0" />
                 <scale x="1" y="1" z="1" />
             </transformation>
-
+            
             <materials>
                 <material id="null" />
             </materials>
-
+           
             <texture id="inherit"/>
 
             <children>
@@ -393,17 +394,17 @@
         </component>
 
         <component id="braco1">
-
+            
             <transformation>
                 <translate x="0" y="0" z="0" />
                 <rotate axis="x" angle="0" />
                 <scale x="1" y="1" z="1" />
             </transformation>
-
+            
             <materials>
                 <material id="null" />
             </materials>
-
+           
             <texture id="inherit"/>
 
             <children>
@@ -415,17 +416,17 @@
         </component>
 
         <component id="braco2">
-
+            
             <transformation>
                 <translate x="0" y="1.5" z="0" />
                 <rotate axis="y" angle="180" />
                 <scale x="1" y="1" z="1" />
             </transformation>
-
+            
             <materials>
                 <material id="null" />
             </materials>
-
+           
             <texture id="inherit"/>
 
             <children>
@@ -437,80 +438,80 @@
         </component>
 
         <component id="bracos">
-
+            
             <transformation>
                 <translate x="0" y="0" z="0" />
                 <rotate axis="x" angle="0" />
                 <scale x="1" y="1" z="1" />
             </transformation>
-
+            
             <materials>
                 <material id="null" />
             </materials>
-
+           
             <texture id="inherit"/>
 
             <children>
                 <componentref id="braco_parte_vertical" />
                 <componentref id="braco_parte_horizontal" />
-
+                
             </children>
         </component>
 
         <component id="corpo_parte1">
-
+            
             <transformation>
-                <translate x="0" y="0" z="0" />
+                <translate x="0" y="0" z="0"  />
 
                 <scale x="0.75" y="6" z="0.75"/>
                 <rotate axis="x" angle="-90" />
-
+                
             </transformation>
-
+            
             <materials>
                 <material id="null" />
             </materials>
-
+           
             <texture id="inherit"/>
 
             <children>
                 <primitiveref id="cylinder" />
-
+                
             </children>
         </component>
 
         <component id="corpo_topo">
-
+            
             <transformation>
                 <translate x="0" y="0" z="0" />
                 <rotate axis="x" angle="0" />
                 <scale x="1" y="1" z="1" />
             </transformation>
-
+            
             <materials>
                 <material id="null" />
             </materials>
-
+           
             <texture id="inherit"/>
 
             <children>
                 <primitiveref id="sphere" />
-
+                
             </children>
         </component>
 
         <component id="corpo">
-
+            
             <transformation>
                 <translate x="0" y="0" z="0" />
                 <rotate axis="x" angle="0" />
                 <scale x="1" y="1" z="1" />
             </transformation>
-
+            
             <materials>
                 <material id="null" />
             </materials>
-
+           
             <texture id="inherit"/>
 
             <children>
@@ -520,17 +521,17 @@
         </component>
 
         <component id="cactus_1">
-
+            
             <transformation>
                 <translate x="15" y="0" z="7.5" />
                 <rotate axis="x" angle="0" />
                 <scale x="0.25" y="0.25" z="0.25" />
             </transformation>
-
+            
             <materials>
                 <material id="null" />
             </materials>
-
+           
             <texture id="inherit"/>
 
             <children>
@@ -539,18 +540,18 @@
             </children>
         </component>
 
-        <component id="cactus_2">
-
+         <component id="cactus_2">
+            
             <transformation>
                 <translate x="-15" y="0" z="5" />
                 <rotate axis="x" angle="0" />
                 <scale x="0.2" y="0.2" z="0.2" />
             </transformation>
-
+            
             <materials>
                 <material id="null" />
             </materials>
-
+           
             <texture id="inherit"/>
 
             <children>
@@ -560,17 +561,17 @@
         </component>
 
         <component id="cactus_3">
-
+            
             <transformation>
                 <translate x="-20" y="0" z="7.5" />
                 <rotate axis="x" angle="0" />
                 <scale x="0.3" y="0.3" z="0.3" />
             </transformation>
-
+            
             <materials>
                 <material id="null" />
             </materials>
-
+           
             <texture id="inherit"/>
 
             <children>
@@ -580,17 +581,17 @@
         </component>
 
         <component id="cactus_4">
-
+            
             <transformation>
                 <translate x="5" y="0" z="15" />
                 <rotate axis="x" angle="0" />
                 <scale x="0.2" y="0.2" z="0.2"/>
             </transformation>
-
+            
             <materials>
                 <material id="null" />
             </materials>
-
+           
             <texture id="inherit"/>
 
             <children>
@@ -600,18 +601,18 @@
         </component>
 
         <component id="cactus_5">
-
+            
             <transformation>
                 <translate x="5" y="0" z="10" />
                 <rotate axis="x" angle="0" />
                 <scale x="0.2" y="0.2" z="0.2" />
             </transformation>
-
+            
             <materials>
                 <material id="null" />
             </materials>
-
-            <texture id="inherit"/>
+           
+           <texture id="inherit"/>
 
             <children>
                 <componentref id="corpo" />
@@ -620,17 +621,17 @@
         </component>
 
         <component id="cactus_6">
-
+            
             <transformation>
                 <translate x="-10" y="0" z="20" />
                 <rotate axis="x" angle="0" />
                 <scale x="0.25" y="0.25" z="0.25" />
             </transformation>
-
+            
             <materials>
                 <material id="null" />
             </materials>
-
+           
             <texture id="inherit"/>
 
             <children>
@@ -639,19 +640,19 @@
             </children>
         </component>
 
-        <component id="cactus_7">
-
+         <component id="cactus_7">
+            
             <transformation>
                 <translate x="20" y="0" z="5" />
                 <rotate axis="x" angle="0" />
                 <scale x="0.25" y="0.25" z="0.25"/>
             </transformation>
-
+            
             <materials>
                 <material id="null" />
             </materials>
-
-            <texture id="inherit"/>
+           
+           <texture id="inherit"/>
 
             <children>
                 <componentref id="corpo" />
@@ -660,18 +661,18 @@
         </component>
 
         <component id="cactus_8">
-
+            
             <transformation>
                 <translate x="20" y="0" z="-5" />
                 <rotate axis="x" angle="0" />
                 <scale x="0.3" y="0.3" z="0.3" />
             </transformation>
-
+            
             <materials>
                 <material id="null" />
             </materials>
-
-            <texture id="inherit"/>
+           
+           <texture id="inherit"/>
 
             <children>
                 <componentref id="corpo" />
@@ -680,17 +681,17 @@
         </component>
 
         <component id="cactus_9">
-
+            
             <transformation>
                 <translate x="0" y="0" z="-15" />
                 <rotate axis="x" angle="0" />
                 <scale x="0.2" y="0.2" z="0.2" />
             </transformation>
-
+            
             <materials>
                 <material id="null" />
             </materials>
-
+           
             <texture id="inherit"/>
 
             <children>
@@ -700,17 +701,17 @@
         </component>
 
         <component id="cactus_10">
-
+            
             <transformation>
                 <translate x="7.5" y="0" z="-17.5" />
                 <rotate axis="x" angle="0" />
                 <scale x="0.25" y="0.25" z="0.25" />
             </transformation>
-
+            
             <materials>
                 <material id="null" />
             </materials>
-
+           
             <texture id="inherit"/>
 
             <children>
@@ -719,18 +720,18 @@
             </children>
         </component>
 
-        <component id="cacti">
-
+         <component id="cacti">
+            
             <transformation>
                 <translate x="0" y="0" z="0" />
                 <rotate axis="x" angle="0" />
                 <scale x="1" y="1" z="1" />
             </transformation>
-
+            
             <materials>
                 <material id="null" />
             </materials>
-
+           
             <texture id="cactustex"/>
 
             <children>
@@ -744,9 +745,9 @@
                 <componentref id="cactus_8" />
                 <componentref id="cactus_9" />
                 <componentref id="cactus_10" />
-
+                
             </children>
-        </component>
-
+         </component>
+        
     </components>
 </yas>
