@@ -29,9 +29,9 @@ class MySceneGraph {
         this.nodes = [];
         this.materials = [];
         this.textures = [];
+        this.primitives = [];
 
         this.idRoot = null;                    // The id of the root element.
-
         this.axisCoords = [];
         this.axisCoords['x'] = [1, 0, 0];
         this.axisCoords['y'] = [0, 1, 0];
@@ -201,18 +201,6 @@ class MySceneGraph {
             if ((error = this.parseComponents(nodes[index])) != null)
                 return error;
         }
-
-        // <NODES>
-        //if ((index = nodeNames.indexOf("NODES")) == -1)
-        //return "tag <NODES> missing";
-        //else {
-        //if (index != NODES_INDEX)
-        //this.onXMLMinorError("tag <NODES> out of order");
-
-        //Parse NODES block
-        //if ((error = this.parseNodes(nodes[index])) != null)
-        //return error;
-        //}
     }
 
     /**
@@ -222,10 +210,9 @@ class MySceneGraph {
     parseScene(sceneNode) {
 
         this.root = this.reader.getString(sceneNode, "root");
-        console.log(this.root);
-        this.axis_length = this.reader.getFloat(sceneNode, 'axis_length');
-        console.log(this.axis_length);
-
+        this.idRoot = this.root;
+        this.axislength = this.reader.getFloat(sceneNode, 'axis_length');
+      
     }
 
     /**
@@ -299,123 +286,21 @@ class MySceneGraph {
         var ambientIndex = nodeNames.indexOf("ambient");
         var backgroundIndex = nodeNames.indexOf("background");
 
-        var red_amb = this.reader.getFloat(children[ambientIndex], 'r');
-        var green_amb = this.reader.getFloat(children[ambientIndex], 'g');
-        var blue_amb = this.reader.getFloat(children[ambientIndex], 'b');
-        var a_amb = this.reader.getFloat(children[ambientIndex], 'a');
+         this.red_amb = this.reader.getFloat(children[ambientIndex], 'r');
+        this.green_amb = this.reader.getFloat(children[ambientIndex], 'g');
+        this.blue_amb = this.reader.getFloat(children[ambientIndex], 'b');
+        this.a_amb = this.reader.getFloat(children[ambientIndex], 'a');
 
-        var red_back = this.reader.getFloat(children[backgroundIndex], 'r');
-        var green_back = this.reader.getFloat(children[backgroundIndex], 'g');
-        var blue_back = this.reader.getFloat(children[backgroundIndex], 'b');
-        var a_back = this.reader.getFloat(children[backgroundIndex], 'a');
+         this.red_back = this.reader.getFloat(children[backgroundIndex], 'r');
+         this.green_back = this.reader.getFloat(children[backgroundIndex], 'g');
+         this.blue_back = this.reader.getFloat(children[backgroundIndex], 'b');
+         this.a_back = this.reader.getFloat(children[backgroundIndex], 'a');
 
-        //console.log(red_amb + " " + green_amb + " " + blue_amb + " " + a_amb);
-        // console.log(red_back + " " + green_back + " " + blue_back + " " + a_back);
+      
     }
 
-    /**
-     * Parses the <INITIALS> block.
-     */
-    parseInitials(initialsNode) {
 
-        var children = initialsNode.children;
-
-        var nodeNames = [];
-
-        for (var i = 0; i < children.length; i++)
-            nodeNames.push(children[i].nodeName);
-
-        // Frustum planes
-        // (default values)
-        this.near = 0.1;
-        this.far = 500;
-        var indexFrustum = nodeNames.indexOf("frustum");
-        if (indexFrustum == -1) {
-            this.onXMLMinorError("frustum planes missing; assuming 'near = 0.1' and 'far = 500'");
-        }
-        else {
-            this.near = this.reader.getFloat(children[indexFrustum], 'near');
-            this.far = this.reader.getFloat(children[indexFrustum], 'far');
-
-            if (!(this.near != null && !isNaN(this.near))) {
-                this.near = 0.1;
-                this.onXMLMinorError("unable to parse value for near plane; assuming 'near = 0.1'");
-            }
-            else if (!(this.far != null && !isNaN(this.far))) {
-                this.far = 500;
-                this.onXMLMinorError("unable to parse value for far plane; assuming 'far = 500'");
-            }
-
-            if (this.near >= this.far)
-                return "'near' must be smaller than 'far'";
-        }
-
-        // Checks if at most one translation, three rotations, and one scaling are defined.
-        if (initialsNode.getElementsByTagName('translation').length > 1)
-            return "no more than one initial translation may be defined";
-
-        if (initialsNode.getElementsByTagName('rotation').length > 3)
-            return "no more than three initial rotations may be defined";
-
-        if (initialsNode.getElementsByTagName('scale').length > 1)
-            return "no more than one scaling may be defined";
-
-        // Initial transforms.
-        this.initialTranslate = [];
-        this.initialScaling = [];
-        this.initialRotations = [];
-
-        // Gets indices of each element.
-        var translationIndex = nodeNames.indexOf("translation");
-        var thirdRotationIndex = nodeNames.indexOf("rotation");
-        var secondRotationIndex = nodeNames.indexOf("rotation", thirdRotationIndex + 1);
-        var firstRotationIndex = nodeNames.lastIndexOf("rotation");
-        var scalingIndex = nodeNames.indexOf("scale");
-
-        // Checks if the indices are valid and in the expected order.
-        // Translation.
-        this.initialTransforms = mat4.create();
-        mat4.identity(this.initialTransforms);
-
-        if (translationIndex == -1)
-            this.onXMLMinorError("initial translation undefined; assuming T = (0, 0, 0)");
-        else {
-            var tx = this.reader.getFloat(children[translationIndex], 'x');
-            var ty = this.reader.getFloat(children[translationIndex], 'y');
-            var tz = this.reader.getFloat(children[translationIndex], 'z');
-
-            if (tx == null || ty == null || tz == null) {
-                tx = 0;
-                ty = 0;
-                tz = 0;
-                this.onXMLMinorError("failed to parse coordinates of initial translation; assuming zero");
-            }
-
-            //TODO: Save translation data
-        }
-
-        //TODO: Parse Rotations
-
-        //TODO: Parse Scaling
-
-        //TODO: Parse Reference length
-
-        this.log("Parsed initials");
-
-        return null;
-    }
-
-    /**
-     * Parses the <ILLUMINATION> block.
-     * @param {illumination block element} illuminationNode
-     */
-    parseIllumination(illuminationNode) {
-        // TODO: Parse Illumination node
-
-        this.log("Parsed illumination");
-
-        return null;
-    }
+   
 
     /**
      * Parses the <LIGHTS> node.
@@ -546,7 +431,7 @@ class MySceneGraph {
 
             console.log(text_id + " " + path);
 
-            var texture = new CGFtexture(this.scene, "scenes/images/" + path);
+            var texture = new CGFtexture(this.scene, path);
 
             this.textures[text_id] = texture;
 
@@ -723,7 +608,8 @@ class MySceneGraph {
                 var y1_rectangle = this.reader.getFloat(grandChildren[rectangleIndex], 'y1');
                 var x2_rectangle = this.reader.getFloat(grandChildren[rectangleIndex], 'x2');
                 var y2_rectangle = this.reader.getFloat(grandChildren[rectangleIndex], 'y2');
-                console.log("rectangle: " + x1_rectangle + " " + y1_rectangle + " " + x2_rectangle + " " + y2_rectangle);
+                this.primitives[primitiveId] = new MyQuad(this.scene,x1_rectangle,y1_rectangle,x2_rectangle,y2_rectangle);
+               // console.log("rectangle: " + x1_rectangle + " " + y1_rectangle + " " + x2_rectangle + " " + y2_rectangle);
             }
 
             if (triangleIndex != -1) {
@@ -736,10 +622,10 @@ class MySceneGraph {
                 var x3_triangle = this.reader.getFloat(grandChildren[triangleIndex], 'x3');
                 var y3_triangle = this.reader.getFloat(grandChildren[triangleIndex], 'y3');
                 var z3_triangle = this.reader.getFloat(grandChildren[triangleIndex], 'z3');
-
-                console.log("triangle point1: " + x1_triangle + " " + y1_triangle + " " + z1_triangle);
-                console.log("triangle point2: " + x2_triangle + " " + y2_triangle + " " + z2_triangle);
-                console.log("triangle point3: " + x3_triangle + " " + y3_triangle + " " + z3_triangle);
+                this.primitives[primitiveId] = new MyTriangle(this.scene,x1_triangle,x1_triangle,z1_triangle,x2_rectangle,y2_rectangle,z2_triangle,x3_triangle,y3_triangle,z3_triangle);
+                //console.log("triangle point1: " + x1_triangle + " " + y1_triangle + " " + z1_triangle);
+                //console.log("triangle point2: " + x2_triangle + " " + y2_triangle + " " + z2_triangle);
+                //console.log("triangle point3: " + x3_triangle + " " + y3_triangle + " " + z3_triangle);
             }
 
             if (cylinderIndex != -1) {
@@ -789,9 +675,6 @@ class MySceneGraph {
         }
 
         for (var i = 0; i < children.length; i++) {
-
-
-
 
             var componentId = this.reader.getString(children[i], 'id');
 

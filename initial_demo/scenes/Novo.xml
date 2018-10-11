@@ -12,11 +12,11 @@
 <yas>
     <!-- deve definir-se um objeto para raiz da arvore, assim -->
     <!-- como o comprimento dos tres eixos (cilindros) -->
-    <scene root="root" axis_length="5.0" />
+    <scene root="root" axis_length="5" />
     <views default="perspective2">
         <!-- tem de existir, pelo menos, uma vista de -->
         <!-- entre as seguintes (perspective ou ortho) -->
-        <perspective id="perspective2" near="0.1" far="1000.0" angle="23.0">
+        <perspective id="perspective2" near="0.1" far="100.0" angle="23.0">
             <from x="100.0" y="100.0" z="100.0" />
             <to x="0.0" y="0.0" z="0.0" />
         </perspective>
@@ -47,9 +47,9 @@
     <textures>
         <!-- Deve existir um ou mais blocos "texture" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
-        <texture id="sand" file="sand.png" />
-        <texture id="pyramidtex" file="pyramid.png" />
-        <texture id="cactustex" file="cactus.png" />
+        <texture id="sand" file="images/sand.png" />
+        <texture id="pyramidtex" file="images/pyramid.png" />
+        <texture id="cactustex" file="images/cactus.png" />
     </textures>
     <materials>
         <!-- Deve existir um ou mais blocos "material" -->

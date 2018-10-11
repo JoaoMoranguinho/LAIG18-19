@@ -28,6 +28,7 @@ class XMLscene extends CGFscene {
 
         this.enableTextures(true);
 
+        
         this.gl.clearDepth(100.0);
         this.gl.enable(this.gl.DEPTH_TEST);
         this.gl.enable(this.gl.CULL_FACE);
@@ -81,14 +82,17 @@ class XMLscene extends CGFscene {
      * As loading is asynchronous, this may be called already after the application has started the run loop
      */
     onGraphLoaded() {
-        this.camera.near = this.graph.near;
-        this.camera.far = this.graph.far;
+        this.axis = new CGFaxis(this, this.graph.axislength);
+       
+      //  this.camera.near = this.graph.near;
+        //this.camera.far = this.graph.far;
 
         //TODO: Change reference length according to parsed graph
-        //this.axis = new CGFaxis(this, this.graph.referenceLength);
-
+       
         // TODO: Change ambient and background details according to parsed graph
-
+        this.gl.clearColor(this.graph.red_back,this.graph.green_back,this.graph.blue_back,this.graph.a_back);
+        this.setGlobalAmbientLight(this.graph.red_amb,this.graph.green_amb,this.graph.blue_amb,this.graph.a_amb);
+       
         this.initLights();
 
         // Adds lights group.
