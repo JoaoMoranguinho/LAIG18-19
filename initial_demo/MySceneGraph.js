@@ -799,8 +799,9 @@ class MySceneGraph {
         // entry point for graph rendering
         //TODO: Render loop starting at root of graph
         // console.log( this.materials["default_material"]);
-        this.processagrafo("root", this.materials["default_material"], this.textures["default_texture"]);
-
+       //this.processagrafo("root", this.materials["default_material"], this.textures["default_texture"]);
+        var quad = new MyQuad(this.scene,0.5,0.5,-0.5,-0.5);
+        quad.display();
 
 
     }
