@@ -18,7 +18,10 @@ class Node
 
 
     }
-    
+    setGeom(primitive)
+    {
+        this.geom = primitive;
+    }
     push(node)
     {
         this.children.push(node);

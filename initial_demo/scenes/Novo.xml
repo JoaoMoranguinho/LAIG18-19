@@ -63,12 +63,12 @@
     </materials>
     <transformations>
         <transformation id="transformation">
-            <scale x="1" y="2" z="3" />
+            <scale x="1" y="1" z="1" />
         </transformation>
     </transformations>
     <primitives>
         <primitive id="rectangle">
-            <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="-0.5" />
+            <rectangle x1="-0.5" y1="-0.5" x2="-0.5" y2="-0.5" />
         </primitive >
 
         <primitive id="triangle">
@@ -80,7 +80,7 @@
         </primitive >
 
         <primitive id="sphere">
-            <sphere radius="1" slices="2" stacks="2" />
+            <sphere radius="2" slices="20" stacks="20" />
         </primitive >
 
         <primitive id="torus">
@@ -100,7 +100,7 @@
             </transformation>
 
             <materials>
-                <material id="null" />
+                <material id="material1" />
             </materials>
 
             <texture id="null"/>

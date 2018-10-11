@@ -622,7 +622,7 @@ class MySceneGraph {
                 var x3_triangle = this.reader.getFloat(grandChildren[triangleIndex], 'x3');
                 var y3_triangle = this.reader.getFloat(grandChildren[triangleIndex], 'y3');
                 var z3_triangle = this.reader.getFloat(grandChildren[triangleIndex], 'z3');
-                this.primitives[primitiveId] = new MyTriangle(this.scene,x1_triangle,x1_triangle,z1_triangle,x2_rectangle,y2_rectangle,z2_triangle,x3_triangle,y3_triangle,z3_triangle);
+                this.primitives[primitiveId] = new MyTriangle(this.scene,x1_triangle,y1_triangle,z1_triangle,x2_triangle,y2_triangle,z2_triangle,x3_triangle,y3_triangle,z3_triangle);
                 //console.log("triangle point1: " + x1_triangle + " " + y1_triangle + " " + z1_triangle);
                 //console.log("triangle point2: " + x2_triangle + " " + y2_triangle + " " + z2_triangle);
                 //console.log("triangle point3: " + x3_triangle + " " + y3_triangle + " " + z3_triangle);
@@ -641,6 +641,9 @@ class MySceneGraph {
                 var radius_sphere = this.reader.getFloat(grandChildren[sphereIndex], 'radius');
                 var slices_sphere = this.reader.getFloat(grandChildren[sphereIndex], 'slices');
                 var stacks_sphere = this.reader.getFloat(grandChildren[sphereIndex], 'stacks');
+
+                this.primitives[primitiveId] = new MySphere(this.scene,radius_sphere,slices_sphere,stacks_sphere);
+
                 console.log("sphere: " + radius_sphere + " " + slices_sphere + " " + stacks_sphere);
             }
 
@@ -738,7 +741,7 @@ class MySceneGraph {
             var textureIndex = nodeNames.indexOf("texture");
             var textureID = this.reader.getString(grandChildren[textureIndex], 'id');
             node.setTexture(textureID);
-            console.log("texure ID: " + textureID);
+            console.log("texture ID: " + textureID);
 
             var childrenIndex = nodeNames.indexOf("children");
             var grandgrandchildren = grandChildren[childrenIndex].children;
@@ -746,6 +749,11 @@ class MySceneGraph {
 
             for (var j = 0; j < grandgrandchildren.length; j++) {
                 var primitiverefID = this.reader.getString(grandgrandchildren[j], 'id');
+                if(grandgrandchildren[j].nodeName == "primitiveref")
+                {
+                    node.setGeom(this.primitives[primitiverefID]);
+                    console.log(this.primitives[primitiverefID]);
+                }
                 node.push(primitiverefID);
                 console.log("primitiveref ID: " + primitiverefID);
             }
@@ -803,11 +811,11 @@ class MySceneGraph {
         if (nodeName != null) {
             var node = this.nodes[nodeName];
 
-           /* if (node.getMaterial() != null)
+         /*   if (node.getMaterial() != null)
                 material = this.materials[node.getMaterial()];
 
             if (material != null)
-               material.apply();
+           material.apply();
 
             if (node.texture != null)
                 texture = node.tex;
@@ -816,7 +824,7 @@ class MySceneGraph {
                 this.scene.applyTexture(texture);*/
         }
 
-       // this.scene.mulMatrix(node.mat);
+        //this.scene.mulMatrix(node.mat);
 
 
         for (var i = 0; i < node.getchildren_length; i++) {
@@ -826,9 +834,9 @@ class MySceneGraph {
             this.popMatrix();
         }
 
-       /* if (node.geom != null) {
+        if (node.geom != null) {
             node.geom.display();
-        }*/
+        }
 
     }
 }
