@@ -634,6 +634,7 @@ class MySceneGraph {
                 var height_cylinder = this.reader.getFloat(grandChildren[cylinderIndex], 'height');
                 var slices_cylinder = this.reader.getFloat(grandChildren[cylinderIndex], 'slices');
                 var stacks_cylinder = this.reader.getFloat(grandChildren[cylinderIndex], 'stacks');
+                this.primitives[primitiveId] = new MyCylinder(this.scene,base_cylinder,top_cylinder,height_cylinder,slices_cylinder,stacks_cylinder);
                 console.log("cylinder: " + base_cylinder + " " + top_cylinder + " " + height_cylinder + " " + slices_cylinder + " " + stacks_cylinder);
             }
 
@@ -647,13 +648,13 @@ class MySceneGraph {
                 console.log("sphere: " + radius_sphere + " " + slices_sphere + " " + stacks_sphere);
             }
 
-            if (torusIndex != -1) {
+          /*  if (torusIndex != -1) {
                 var inner_torus = this.reader.getFloat(grandChildren[torusIndex], 'inner');
                 var outer_torus = this.reader.getFloat(grandChildren[torusIndex], 'outer');
                 var slices_torus = this.reader.getFloat(grandChildren[torusIndex], 'slices');
                 var loops_torus = this.reader.getFloat(grandChildren[torusIndex], 'loops');
                 console.log("torus: " + inner_torus + " " + outer_torus + " " + slices_torus + " " + loops_torus);
-            }
+            }*/
         }
 
         this.log("Parsed primitives");
@@ -683,7 +684,7 @@ class MySceneGraph {
 
             var node = new Node(componentId);
 
-            console.log("component ID: " + componentId);
+           // console.log("component ID: " + componentId);
 
             grandChildren = children[i].children;
             nodeNames = [];
@@ -707,20 +708,20 @@ class MySceneGraph {
                 var x_translate = this.reader.getFloat(grandgrandchildren[translateIndex], 'x');
                 var y_translate = this.reader.getFloat(grandgrandchildren[translateIndex], 'y');
                 var z_translate = this.reader.getFloat(grandgrandchildren[translateIndex], 'z');
-                console.log("translate: " + x_translate + " " + y_translate + " " + z_translate);
+               // console.log("translate: " + x_translate + " " + y_translate + " " + z_translate);
             }
 
             if (rotateIndex != -1) {
                 var axis_rotate = this.reader.getString(grandgrandchildren[rotateIndex], 'axis');
                 var angle_rotate = this.reader.getFloat(grandgrandchildren[rotateIndex], 'angle');
-                console.log("rotate: " + axis_rotate + " " + angle_rotate);
+               // console.log("rotate: " + axis_rotate + " " + angle_rotate);
             }
 
             if (scaleIndex != -1) {
                 var x_scale = this.reader.getFloat(grandgrandchildren[scaleIndex], 'x');
                 var y_scale = this.reader.getFloat(grandgrandchildren[scaleIndex], 'y');
                 var z_scale = this.reader.getFloat(grandgrandchildren[scaleIndex], 'z');
-                console.log("scale: " + x_scale + " " + y_scale + " " + z_scale);
+               // console.log("scale: " + x_scale + " " + y_scale + " " + z_scale);
             }
 
             nodeNames = [];
@@ -735,13 +736,13 @@ class MySceneGraph {
                 var materialID = this.reader.getString(grandgrandchildren[j], 'id');
                 node.setMaterial(materialID);
 
-                console.log("material ID: " + materialID);
+             //   console.log("material ID: " + materialID);
             }
 
             var textureIndex = nodeNames.indexOf("texture");
             var textureID = this.reader.getString(grandChildren[textureIndex], 'id');
             node.setTexture(textureID);
-            console.log("texture ID: " + textureID);
+           // console.log("texture ID: " + textureID);
 
             var childrenIndex = nodeNames.indexOf("children");
             var grandgrandchildren = grandChildren[childrenIndex].children;
@@ -752,15 +753,20 @@ class MySceneGraph {
                 if(grandgrandchildren[j].nodeName == "primitiveref")
                 {
                     node.setGeom(this.primitives[primitiverefID]);
-                    console.log(this.primitives[primitiverefID]);
+                    console.log(node.geom);
+                    console.log(primitiverefID);
+
+                    if(this.nodes[primitiverefID] == null)
+                        this.nodes[primitiverefID] = new Node(primitiverefID);
+                 //   console.log(this.primitives[primitiverefID]);
                 }
                 node.push(primitiverefID);
-                console.log("primitiveref ID: " + primitiverefID);
+               // console.log("primitiveref ID: " + primitiverefID);
             }
             this.nodes[componentId] = node;
         }
 
-        console.log(this.nodes);
+        //console.log(this.nodes);
         this.log("Parsed components");
         return null;
     }
@@ -799,16 +805,19 @@ class MySceneGraph {
         // entry point for graph rendering
         //TODO: Render loop starting at root of graph
         // console.log( this.materials["default_material"]);
-       //this.processagrafo("root", this.materials["default_material"], this.textures["default_texture"]);
-        var quad = new MyQuad(this.scene,0.5,0.5,-0.5,-0.5);
-        quad.display();
-
+       this.processagrafo("root", this.materials["default_material"], this.textures["default_texture"]);
+       // var quad = new MyQuad(this.scene,0.5,0.5,-0.5,-0.5);
+        //quad.display();
+         //console.log(quad);
+         //console.log(this.nodes);
 
     }
 
     processagrafo(nodeName, MatIni, TextIni) {
+
         var material = MatIni;
         var texture = TextIni;
+       
         if (nodeName != null) {
             var node = this.nodes[nodeName];
 
@@ -827,16 +836,19 @@ class MySceneGraph {
 
         //this.scene.mulMatrix(node.mat);
 
+        console.log(node);
+        for (var i = 0; i < node.getchildren_length(); i++) {
 
-        for (var i = 0; i < node.getchildren_length; i++) {
             this.scene.pushMatrix();
            // this.scene.applyMaterial(material);
             this.processagrafo(node.children[i],this.materials["default_material"], this.textures["default_texture"]);
-            this.popMatrix();
+            this.scene.popMatrix();
         }
 
         if (node.geom != null) {
+           
             node.geom.display();
+            
         }
 
     }

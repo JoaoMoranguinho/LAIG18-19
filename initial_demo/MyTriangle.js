@@ -33,10 +33,16 @@ class MyTriangle extends CGFobject
 				this.x3, this.y3, this.z3
 				];
 
+		var U =[this.x2-this.x1,this.y2-this.y1,this.z2-this.z1];
+		var V=[this.x3-this.x1,this.y3-this.y1,this.z3-this.z1];
+		var Nx= U[1]*V[2]- U[2]*V[1];
+		var Ny= U[2]*V[0]- U[0]*V[2];
+		var Nz= U[0]*V[1]- U[1]*V[0];
+
 		this.normals = [
-				0, 0, 1,
-				0, 0, 1,
-				0, 0, 1
+				Nx, Ny, Nz,
+				Nx, Ny, Nz,
+				Nx, Ny, Nz
 				
 		];
 
