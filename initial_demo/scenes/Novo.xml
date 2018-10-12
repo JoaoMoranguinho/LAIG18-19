@@ -80,7 +80,7 @@
         </primitive >
 
         <primitive id="sphere">
-            <sphere radius="2" slices="20" stacks="20" />
+            <sphere radius="0.5" slices="20" stacks="20" />
         </primitive >
 
         <primitive id="torus">

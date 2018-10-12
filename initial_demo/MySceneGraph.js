@@ -753,11 +753,11 @@ class MySceneGraph {
                 if(grandgrandchildren[j].nodeName == "primitiveref")
                 {
                     node.setGeom(this.primitives[primitiverefID]);
-                    console.log(node.geom);
-                    console.log(primitiverefID);
+                    //console.log(node.geom);
+                    //console.log(primitiverefID);
 
-                    if(this.nodes[primitiverefID] == null)
-                        this.nodes[primitiverefID] = new Node(primitiverefID);
+                    /*if(this.nodes[primitiverefID] == null)
+                        this.nodes[primitiverefID] = new Node(primitiverefID);*/
                  //   console.log(this.primitives[primitiverefID]);
                 }
                 node.push(primitiverefID);
@@ -804,12 +804,8 @@ class MySceneGraph {
     displayScene() {
         // entry point for graph rendering
         //TODO: Render loop starting at root of graph
-        // console.log( this.materials["default_material"]);
-       this.processagrafo("root", this.materials["default_material"], this.textures["default_texture"]);
-       // var quad = new MyQuad(this.scene,0.5,0.5,-0.5,-0.5);
-        //quad.display();
-         //console.log(quad);
-         //console.log(this.nodes);
+        this.processagrafo("root", this.materials["default_material"], this.textures["default_texture"]);
+       
 
     }
 
@@ -836,20 +832,28 @@ class MySceneGraph {
 
         //this.scene.mulMatrix(node.mat);
 
-        console.log(node);
+       // console.log(node);
         for (var i = 0; i < node.getchildren_length(); i++) {
 
             this.scene.pushMatrix();
            // this.scene.applyMaterial(material);
-            this.processagrafo(node.children[i],this.materials["default_material"], this.textures["default_texture"]);
-            this.scene.popMatrix();
-        }
-
-        if (node.geom != null) {
+          
+           if (node.geom != null) {
            
             node.geom.display();
             
+        }else{
+            this.processagrafo(node.children[i],this.materials["default_material"], this.textures["default_texture"]);
         }
+           
+            this.scene.popMatrix();
+        }
+
+        /*if (node.geom != null) {
+           
+            node.geom.display();
+            
+        }*/
 
     }
 }
